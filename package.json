@@ -1,0 +1,25 @@
+{
+  "name": "projects.rvg",
+  "version": "0.0.1",
+  "description": "A project organizer and time tracker app",
+  "main": "server.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rodrigo-Vargas/projects"
+  },
+  "homepage": "https://github.com/Rodrigo-Vargas/projects",
+  "bugs": "https://github.com/Rodrigo-Vargas/projects/issues",
+  "keywords": [
+    "time",
+    "track",
+    "projects"
+  ],
+  "author": "Rodrigo Vargas",
+  "dependencies": {
+    "express": "^4.13.4",
+    "morgan": "^1.7.0"
+  }
+}
