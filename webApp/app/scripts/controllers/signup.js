@@ -9,11 +9,6 @@
  */
 angular.module('webAppApp')
   .controller('SignupCtrl', function ($scope, $location) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
 
     $scope.sendForm = function() {
       var valid = true;

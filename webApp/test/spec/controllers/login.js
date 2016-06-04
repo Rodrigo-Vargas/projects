@@ -1,20 +1,20 @@
 'use strict';
 
-describe('Controller: DashboardCtrl', function () {
-
+describe('Controller: LoginCtrl', function () {
   // load the controller's module
   beforeEach(module('webAppApp'));
 
-  var DashboardCtrl,
+  var LoginCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
+    $httpBackend = $injector.get('$httpBackend');
+
     scope = $rootScope.$new();
-    DashboardCtrl = $controller('DashboardCtrl', {
+    LoginCtrl = $controller('LoginCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
-
 });

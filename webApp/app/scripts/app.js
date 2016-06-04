@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ngMockE2E'
   ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -34,6 +35,11 @@ angular
         controller: 'SignupCtrl',
         controllerAs: 'signup'
       })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl',
+        controllerAs: 'login'
+      })
       .when('/dashboard', {
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl',
@@ -43,4 +49,28 @@ angular
         redirectTo: '/'
       });
       //$locationProvider.html5Mode(true);
+  })
+  .run(function($httpBackend) {
+    $httpBackend.whenGET(/views\/.*/).passThrough();
+    
+    $httpBackend.whenPOST('/api/login').respond(function(method, url, data, headers){
+      var dataReturned;
+      var jsonData = JSON.parse(data);
+      
+      if (jsonData.email == "admin" && jsonData.password == "admin")
+      {
+        dataReturned =  {  
+                  "success": true,
+                  "token": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImFkbWluIg.FYSN5xv5ktUq4miC56EC4pRVnPDJZ9Ycl_VqfLhSrv4"
+                };
+      }
+      else
+      {
+        dataReturned =  {  
+                  "success" : false,
+                  "message" : "Check your email address and/or password"
+                };
+      }
+      return [200, dataReturned, {}];
+    });
   });

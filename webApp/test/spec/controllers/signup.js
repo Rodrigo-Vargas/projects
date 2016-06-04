@@ -1,15 +1,22 @@
 'use strict';
 
 describe('Controller: SignupCtrl', function () {
-
   // load the controller's module
   beforeEach(module('webAppApp'));
 
   var SignupCtrl,
-    scope;
+    scope,
+    $httpBackend,
+    authRequestHandler;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $injector) {
+    $httpBackend = $injector.get('$httpBackend');
+
+    // backend definition common for all tests
+    authRequestHandler = $httpBackend.when('POST', '/login')
+                            .respond({userId: 'userX'}, {'A-Token': 'xxx'});
+
     scope = $rootScope.$new();
     SignupCtrl = $controller('SignupCtrl', {
       $scope: scope
@@ -17,7 +24,8 @@ describe('Controller: SignupCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(SignupCtrl.awesomeThings.length).toBe(3);
+  it('should fetch authentication token when login is correct', function() {
+     $rootScope.sendForm();
+     $httpBackend.flush();
   });
 });
