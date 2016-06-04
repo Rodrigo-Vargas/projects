@@ -22,8 +22,6 @@ angular.module('webAppApp')
 
     $scope.taskCustomer = $scope.customers[0];
 
-    console.log($scope.customers);
-
     $scope.tasks = [
       {
         description : 'Task 1',

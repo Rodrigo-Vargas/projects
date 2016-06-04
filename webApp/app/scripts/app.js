@@ -61,7 +61,7 @@ angular
       {
         dataReturned =  {  
                   "success": true,
-                  "token": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImFkbWluIg.FYSN5xv5ktUq4miC56EC4pRVnPDJZ9Ycl_VqfLhSrv4"
+                  "token": "1234"
                 };
       }
       else

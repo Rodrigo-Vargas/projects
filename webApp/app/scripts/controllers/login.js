@@ -23,6 +23,7 @@ angular.module('webAppApp')
         
         if (response.data.success == true)
         {
+          var currentToken = UserService.setToken(response.data.token);
           $location.path('/dashboard');
         }
         else
