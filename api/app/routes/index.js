@@ -3,8 +3,6 @@
 var User            = require('../models/user');
 
 module.exports = function (app, client, jwt) {
-  var db = client;
-
   app.post('/api/signup', function(req, res) {    
     if (!req.body.email || !req.body.password)
     {
@@ -27,18 +25,15 @@ module.exports = function (app, client, jwt) {
 
   app.post('/api/login', function(req, res)
   {
-    var email = req.body.email;
-    
-    db.query(
-      'SELECT * FROM users where email = ($1)', [email],
-      function(err, result) {
-        if(result.rows.length > 0)
-        {
-          var token = jwt.encode(result.rows[0].password, '1234');
-          res.json({success: true, token: 'JWT ' + token});
-        }
-      }      
-    );    
+    var user = new User();
+
+    user.find({ 'email' : req.body.email}, function(err, result){
+      if(result.rows.length > 0)
+      {
+        var token = jwt.encode(result.rows[0].password, '1234');
+        res.json({success: true, token: 'JWT ' + token});
+      }
+    });   
   });
   
   app.get('*', function(req, res) {
