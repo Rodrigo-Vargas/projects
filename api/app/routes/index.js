@@ -1,5 +1,7 @@
 'use strict';
 
+var User            = require('../models/user');
+
 module.exports = function (app, client, jwt) {
   var db = client;
 
@@ -9,18 +11,17 @@ module.exports = function (app, client, jwt) {
       res.json({success: false, msg: 'Please pass email and password.'});
     }
     else 
-    {     
-      db.query(
-        'INSERT into users (email, password) VALUES($1, $2) RETURNING id', 
-        [req.body.email, req.body.password], 
-        function(err, result) {
-          if (err) {
-              res.json({success: false, msg: err});
-          } else {
-              res.json({success: true, msg: 'User created.'});
-          }
+    {
+      var user = new User();
+      user.email = req.body.email;
+      user.password = req.body.password;
+
+      user.save(function(err, result){
+        if (err) {
+          return res.json({success: false, msg: 'Username already exists.'});
         }
-      );
+        res.json({success: true, msg: 'Successful created new user.'});
+      });      
     }
   });
 

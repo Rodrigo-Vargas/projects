@@ -13,9 +13,6 @@ var port = process.env.PORT || 3000;
 var pg = require('pg');
 var connectionString = process.env.DATABASE_URL || "postgresql://projects:projects@localhost/projects";
 
-var pg = require('pg');
-var conString = "postgres://username:password@localhost/database";
-
 pg.connect(connectionString, function(err, client, done) {
 
   if (err) {
