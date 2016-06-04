@@ -1,8 +1,9 @@
 'use strict';
 
 var User            = require('../models/user');
+var Config          = require('../../config/database');
 
-module.exports = function (app, client, jwt) {
+module.exports = function (app, jwt) {
   app.post('/api/signup', function(req, res) {    
     if (!req.body.email || !req.body.password)
     {
@@ -10,12 +11,14 @@ module.exports = function (app, client, jwt) {
     }
     else 
     {
-      var user = new User();
-      user.email = req.body.email;
-      user.password = req.body.password;
+      var newUser = new User();
 
-      user.save(function(err, result){
+      newUser.email = req.body.email;
+      newUser.password = newUser.generateHash(req.body.password);
+
+      newUser.save(function(err, result){
         if (err) {
+          console.log(err);
           return res.json({success: false, msg: 'Username already exists.'});
         }
         res.json({success: true, msg: 'Successful created new user.'});
@@ -27,16 +30,29 @@ module.exports = function (app, client, jwt) {
   {
     var user = new User();
 
-    user.find({ 'email' : req.body.email}, function(err, result){
-      if(result.rows.length > 0)
+    user.findOne({ 'email' : req.body.email}, function(err, user){
+      if (err) 
+        throw err;
+
+      if (!user)
       {
-        var token = jwt.encode(result.rows[0].password, '1234');
-        res.json({success: true, token: 'JWT ' + token});
+        res.send({success: false, message: 'Authentication failed. User not found.'});
+        return;
       }
+
+      if (!user.validPassword(req.body.password))
+      {
+        res.send({success: false, message: 'Authentication failed. Wrong password.'});
+        return;
+      }
+
+      var token = jwt.encode(user, Config.secret);
+
+      res.json({success: true, token: 'JWT ' + token});
     });   
   });
   
   app.get('*', function(req, res) {
-    res.sendFile('/dist/index.html');
+    res.sendfile('./dist/index.html');
   });
 };

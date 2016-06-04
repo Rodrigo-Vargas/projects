@@ -10,26 +10,26 @@ var routes  = require('./app/routes/index.js');
 
 var port = process.env.PORT || 3000;
 
-var pg = require('pg');
-var connectionString = process.env.DATABASE_URL || "postgresql://projects:projects@localhost/projects";
+var record    = require('pg-record');
 
-pg.connect(connectionString, function(err, client, done) {
+record.connect({
+                user: 'projects',
+                password: 'projects',
+                database: 'projects',
+                host: 'localhost'
+              });
 
-  if (err) {
-    return console.error('error fetching client from pool', err);
-  }
+app.use(morgan('dev'));
+app.use(express.static(__dirname + '/dist'));
+app.use('/models', express.static(process.cwd() + '/app/models'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-  app.use(morgan('dev'));
-  app.use(express.static(__dirname + '/dist'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+routes(app, jwt);
 
-  routes(app, client, jwt);
-
-  app.listen(port, function () {
-    console.log('Node.js listening on port ' + port + '...');
-  });
+app.listen(port, function () {
+  console.log('Node.js listening on port ' + port + '...');
 });
 
