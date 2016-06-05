@@ -8,34 +8,38 @@
  * Controller of the webAppApp
  */
 angular.module('webAppApp')
-  .controller('DashboardCtrl', function ($scope) {
-    $scope.customers = [
-      {
-        id : 1,
-        name : 'Facebook'
-      },
-      {
-        id : 2,
-        name : 'Google'  
-      }      
-    ];
+  .controller('DashboardCtrl', function ($scope, $http) {
+    $scope.customers = [];
+    $scope.workdDays = [];
 
-    $scope.taskCustomer = $scope.customers[0];
+    $scope.loadCustomers = function() {
+      $http({
+          method: 'GET',
+          url: '/api/customers/getByUser',
+          data: $scope.formData
+        })
+      .then(function successCallback(response) {
+        $scope.customers = response.data.customers;
+        $scope.taskCustomer = $scope.customers[0];
+      });
+    }
 
-    $scope.tasks = [
-      {
-        description : 'Task 1',
-        start : '00 : 00',
-        end : '10 : 00',
-        customer : $scope.customers[0]
-      },
-       {
-        description : 'Task 2',
-        start : '00 : 00',
-        end : '10 : 00',
-        customer : $scope.customers[1]
-      },
-    ];
+    $scope.loadTasks = function() {
+      $http({
+          method: 'GET',
+          url: '/api/tasks/getByUser',
+          data: $scope.formData
+        })
+      .then(function successCallback(response) {
+        if (response.data.success == true)
+          console.log(response.data.agenda);
+          $scope.workDays = response.data.agenda;
+      });
+    }
+
+    // Initialize
+    $scope.loadCustomers();
+    $scope.loadTasks();
 
     $scope.taskStart = '00:00';
     $scope.taskEnd = '00:00';
@@ -45,15 +49,27 @@ angular.module('webAppApp')
     };
 
     $scope.addTask = function() {
-      $scope.tasks.push({
-                          description : $scope.taskDescription,
-                          start : $scope.taskStart,
-                          end : $scope.taskEnd,
-                          customer : $scope.taskCustomer
-                        }
-      );
-      $scope.taskDescription = '';
-      $scope.taskStart = '00:00';
-      $scope.taskEnd = '00:00';
+      // check to make sure the form is completely valid
+      $scope.taskSubmitted = true;
+      if (!$scope.taskForm.$valid) {
+        return;
+      }
+
+      $http({
+          method: 'POST',
+          url: '/api/tasks/add',
+          data: $scope.newTask
+      })
+      .then(function successCallback(response) {
+        if (response.data.success == true)
+        {
+          $scope.tasks = response.data.tasks;
+
+          $scope.newTask.description = '';
+          $scope.newTask.start = '00:00';
+          $scope.newTask.end = '00:00';
+          $scope.taskCustomer = $scope.customers[0];
+        }
+      });
     };
   });

@@ -8,7 +8,7 @@
  * Controller of the webAppApp
  */
 angular.module('webAppApp')
-  .controller('LoginCtrl', function ($scope, $http, $location) {
+  .controller('LoginCtrl', function ($scope, $http, $location, UserService) {
 
     $scope.loginMessage = "";
 
