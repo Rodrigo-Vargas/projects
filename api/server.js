@@ -1,16 +1,16 @@
 /* Npm packages */
-var express = require('express');
-var morgan  = require('morgan');
+var express    = require('express');
+var morgan     = require('morgan');
 var bodyParser = require('body-parser');
-var jwt        = require('jwt-simple');
+var jwt        = require('jsonwebtoken');
+var passport   = require('passport');
+var record     = require('pg-record');
 
 var app 	= express();
 
 var routes  = require('./app/routes/index.js');
 
 var port = process.env.PORT || 3000;
-
-var record    = require('pg-record');
 
 record.connect({
                 user: 'projects',
@@ -27,7 +27,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-routes(app, jwt);
+app.use(passport.initialize());
+require('./config/passport')(passport);
+
+routes(app, jwt, passport);
 
 app.listen(port, function () {
   console.log('Node.js listening on port ' + port + '...');
