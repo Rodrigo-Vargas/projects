@@ -104,9 +104,21 @@ module.exports = function (app, jwt, passport) {
   });
 
   app.post('/api/tasks/add', passport.authenticate('jwt', { session: false}), function(req, res){
-    if (!req.body.customerId || !req.body.description || !req.body.start || !req.body.conclusion)
+    if (!req.body.customer.id)
     {
-      res.json({success: false, msg: 'Please pass name.'});
+      res.json({success: false, msg: 'Paramater customer.id mismatch'});
+      return;
+    }
+
+    if (!req.body.description)
+    {
+      res.json({success: false, msg: 'Paramater description mismatch'});
+      return;
+    }
+
+    if (!req.body.start || !req.body.conclusion)
+    {
+      res.json({success: false, msg: 'Paramater start or conclusion mismatch'});
       return;
     }
 

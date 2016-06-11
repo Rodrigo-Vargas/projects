@@ -85,6 +85,8 @@ angular.module('webAppApp')
           $scope.newTask.start = '00:00';
           $scope.newTask.end = '00:00';
           $scope.taskCustomer = $scope.customers[0];
+          $scope.loadTasks();
+          $scoe.taskSubmitted = false;
         }
       });
     };
