@@ -104,9 +104,11 @@ module.exports = function (app, jwt, passport) {
   });
 
   app.post('/api/tasks/add', passport.authenticate('jwt', { session: false}), function(req, res){
-    if (!req.body.customer.id)
+    var customer = JSON.parse(req.body.customer);
+
+    if (!customer)
     {
-      res.json({success: false, msg: 'Paramater customer.id mismatch'});
+      res.json({success: false, msg: 'Paramater customer mismatch'});
       return;
     }
 
@@ -124,7 +126,7 @@ module.exports = function (app, jwt, passport) {
 
     var taskInstance = new Task();
 
-    taskInstance.customer_id = req.body.customerId;
+    taskInstance.customer_id = customer.id;
     taskInstance.description = req.body.description;
     taskInstance.start = req.body.start;
     taskInstance.conclusion = req.body.conclusion;
