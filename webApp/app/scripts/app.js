@@ -74,9 +74,7 @@ angular
         tasks : tasks
       }
     ];
-
-
-    
+        
     $httpBackend.whenPOST('/api/login').respond(function(method, url, data, headers){
       var dataReturned;
       var jsonData = JSON.parse(data);

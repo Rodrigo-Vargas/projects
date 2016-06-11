@@ -8,15 +8,30 @@
  * Controller of the webAppApp
  */
 angular.module('webAppApp')
-  .controller('DashboardCtrl', function ($scope, $http) {
+  .controller('DashboardCtrl', function ($scope, $http, UserService, $location) {
     $scope.customers = [];
     $scope.workdDays = [];
 
+    var currentToken = UserService.getToken();
+
+    if (currentToken == "")
+    {
+      $location.path('/login');
+      return;
+    }
+
+    var headers = {
+      'Authorization': currentToken,
+      'Accept': 'application/json;odata=verbose'
+    };
+
     $scope.loadCustomers = function() {
+
       $http({
           method: 'GET',
           url: '/api/customers/getByUser',
-          data: $scope.formData
+          data: $scope.formData,
+          headers : headers
         })
       .then(function successCallback(response) {
         $scope.customers = response.data.customers;
@@ -28,11 +43,11 @@ angular.module('webAppApp')
       $http({
           method: 'GET',
           url: '/api/tasks/getByUser',
-          data: $scope.formData
+          data: $scope.formData,
+          headers : headers
         })
       .then(function successCallback(response) {
         if (response.data.success == true)
-          console.log(response.data.agenda);
           $scope.workDays = response.data.agenda;
       });
     }
@@ -58,7 +73,8 @@ angular.module('webAppApp')
       $http({
           method: 'POST',
           url: '/api/tasks/add',
-          data: $scope.newTask
+          data: $scope.newTask,
+          headers : headers
       })
       .then(function successCallback(response) {
         if (response.data.success == true)
