@@ -2,13 +2,16 @@
 
 var User            = require('../models/user');
 var Customer       = require('../models/customer');
+var Task       = require('../models/task');
 var Config          = require('../../config/database');
 var Helpers         = require('../helpers');
 
 module.exports = function (app, jwt, passport) {
   var helpers = new Helpers();
   var userInstance = new User();
+  var taskInstance = new Task();
   var customerInstance = new Customer();
+
   app.post('/api/signup', function(req, res) {    
     if (!req.body.email || !req.body.password)
     {
@@ -30,8 +33,7 @@ module.exports = function (app, jwt, passport) {
     }
   });
 
-  app.post('/api/login', function(req, res)
-  {
+  app.post('/api/login', function(req, res) {
     var user = new User();
 
     user.findOne({ 'email' : req.body.email}, function(err, user){
@@ -77,8 +79,7 @@ module.exports = function (app, jwt, passport) {
     }
   });
 
-  app.get('/api/customers/getByUser', passport.authenticate('jwt', { session: false}), function(req, res)
-  {
+  app.get('/api/customers/getByUser', passport.authenticate('jwt', { session: false}), function(req, res) {
     userInstance.findOne({
         'email': req.user.email
       }, function(err, user) {
@@ -97,6 +98,57 @@ module.exports = function (app, jwt, passport) {
             }
 
             res.json({ success: true, customers : customers });
+          })
+        }
+      });
+  });
+
+  app.post('/api/tasks/add', passport.authenticate('jwt', { session: false}), function(req, res){
+    if (!req.body.customerId || !req.body.description || !req.body.start || !req.body.conclusion)
+    {
+      res.json({success: false, msg: 'Please pass name.'});
+      return;
+    }
+
+    var taskInstance = new Task();
+
+    taskInstance.customer_id = req.body.customerId;
+    taskInstance.description = req.body.description;
+    taskInstance.start = req.body.start;
+    taskInstance.conclusion = req.body.conclusion;
+
+    taskInstance.save(function(err, result){
+      if (err) {
+        return res.json({success: false, msg: 'Task already exists.', error : err});
+      }
+      res.json({success: true, msg: 'Successful created new task.'});
+    });
+  });
+
+  app.get('/api/tasks/getByUser', passport.authenticate('jwt', { session: false}), function(req, res){
+    userInstance.findOne({
+        'email': req.user.email
+      }, function(err, user) {
+        if (err) 
+          throw err;
+ 
+        if (!user) {
+          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } 
+        else
+        {
+          taskInstance.find(false, function(err, results){
+            var tasks = [];
+            for(var index = 0; index < parseInt(results.rowCount); index++){
+              tasks.push(results.rows[index]);
+            }
+            var agenda = [
+                            {
+                              tasks : tasks
+                            }
+                         ];
+
+            res.json({ success: true, agenda : agenda } );
           })
         }
       });
