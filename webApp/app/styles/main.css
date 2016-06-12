@@ -8,12 +8,14 @@ body {
 }
 
 #brand {
-  border: 2px solid #fff;
-  border-radius: 3px;
+  background-color: #45b900;
+  border-radius: 10px;
   color: #fff;
+  font-size: 18px;
   display: block;
   margin: 10px 15px;
-  padding: 15px;
+  padding: 8px 15px;
+  text-decoration: none;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -22,23 +24,6 @@ body {
 .footer {
   padding-left: 15px;
   padding-right: 15px;
-}
-
-/* Custom page header */
-.header {
-  margin-bottom: 10px;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
-}
-
-/* Custom page footer */
-.footer {
-  color: #777;
 }
 
 .container-narrow > hr {
@@ -56,25 +41,21 @@ body {
   color: #fff;
 }
 
-.img-background {
-  background-image: url("/images/background.jpg");
-  background-attachment: scroll;
-  padding: 200px 0px;
-}
-
 .home-title {
   color: #fff;
   font-family: 'Open Sans';
   text-align: center;
+  text-shadow: 1px 0 #888888, 0 1px #888888, 1px 0 #888888, 0 1px #888888;
 }
 
 h1.home-title {
-  font-size: 36px;
+  font-size: 60px;
 }
 
 h2.home-title {
-  font-size: 24px;
+  font-size: 48px;
 }
+
 .small-form-box {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -92,15 +73,30 @@ h2.home-title {
 
 .btn-container {
   margin: 0 auto;
-  width: 200px;
+  padding: 100px 0px;
+  width: 270px;
 }
 
 .home-btn {
-  border: 2px solid #fff;
+  background-color: #45b900;
   border-radius: 4px;
   color: #fff;
+  display: inline-block;
   font-size: 18px;
   padding: 8px 10px;
+  text-align: center;
+  width: 100px;
+}
+
+.home-btn:hover {
+  background-color: #4dce00;
+  color: #fff;
+  text-decoration: none;  
+}
+
+span.home-text {
+  color: #fff;
+  padding: 0 20px
 }
 
 /* ---------- Home ---------- */

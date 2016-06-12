@@ -16,8 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.utils.masks'//,
-    //'ngMockE2E'
+    'ui.utils.masks',
+    'ngMockE2E'
   ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -51,9 +51,9 @@ angular
       });
       $locationProvider.html5Mode(true);
   })
-//  .run(function($httpBackend) {
-//    $httpBackend.whenGET(/views\/.*/).passThrough();
-/*    var tasks = [{
+  .run(function($httpBackend) {
+    $httpBackend.whenGET(/views\/.*/).passThrough();
+    var tasks = [{
                 description : 'Task 1',
                 duration : '02:00',
                 start : '10:00',
@@ -122,4 +122,3 @@ angular
       return [200, { success : true, tasks : tasks }, {}];
     });
   });
-*/
