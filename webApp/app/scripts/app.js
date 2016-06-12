@@ -49,7 +49,7 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-      $locationProvider.html5Mode(true);
+      //$locationProvider.html5Mode(true);
   })
   .run(function($httpBackend) {
     $httpBackend.whenGET(/views\/.*/).passThrough();
@@ -89,6 +89,14 @@ angular
                             "message" : "Check your email address and/or password"
                         };
       }
+      return [200, dataReturned, {}];
+    });
+
+    $httpBackend.whenPOST('/api/signup').respond(function(method, url, data, headers){
+      var  dataReturned =  {  "success" : true,
+                            "token" : "1234"
+                        };
+
       return [200, dataReturned, {}];
     });
 
