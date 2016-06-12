@@ -16,8 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.utils.masks',
-    'ngMockE2E'
+    'ui.utils.masks'//,
+    //'ngMockE2E'
   ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -49,11 +49,11 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-      //$locationProvider.html5Mode(true);
+      $locationProvider.html5Mode(true);
   })
-  .run(function($httpBackend) {
-    $httpBackend.whenGET(/views\/.*/).passThrough();
-    var tasks = [{
+  //.run(function($httpBackend) {
+  //  $httpBackend.whenGET(/views\/.*/).passThrough();
+  /*  var tasks = [{
                 description : 'Task 1',
                 duration : '02:00',
                 start : '10:00',
@@ -67,13 +67,18 @@ angular
                 end : '10:00',
                 customer : { id : 2, name: 'Google' }
               }];
-      var agenda = [
-      {
-        date : 'Thu, 26 May',
-        workTime : '06:00',
-        tasks : tasks
-      }
-    ];
+    var agenda =  [
+                    {
+                      date : 'Thu, 26 May',
+                      workTime : '06:00',
+                      tasks : tasks
+                    }
+                  ];
+    
+    var customers = [
+                      { id : 1, name: 'Facebook' },
+                      { id : 2, name: 'Google' }
+                    ];
         
     $httpBackend.whenPOST('/api/login').respond(function(method, url, data, headers){
       var dataReturned;
@@ -103,8 +108,19 @@ angular
     $httpBackend.whenGET('/api/customers/getByUser').respond(function(method, url, data, headers){
 
       var dataReturned = { 'success' : true,
-                           'customers' : [{ id : 1, name: 'Facebook' },
-                                          { id : 2, name: 'Google' }]
+                           'customers' : customers
+                         };
+
+      return [200, dataReturned, {}];
+    });
+
+    $httpBackend.whenPOST('/api/customers/add').respond(function(method, url, data, headers){
+      var jsonData = JSON.parse(data);
+
+      customers.push( { id : 3, name : jsonData.name });
+
+      var dataReturned = { 'success' : true,
+                           'customers' : customers
                          };
 
       return [200, dataReturned, {}];
@@ -130,3 +146,4 @@ angular
       return [200, { success : true, tasks : tasks }, {}];
     });
   });
+*/

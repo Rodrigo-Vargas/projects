@@ -3,11 +3,14 @@
     <div id="sidebar">
       <div class="clearfix">
         <h3 id="sidebar-title" class="pull-left">Customers</h3>
-        <a href="/customer/add" id="add-customer-btn" class="pull-right">
+        <a id="add-customer-btn" class="btn pull-right" ng-click="showInputNewCustomer = true">
           <i class="fa fa-plus"></i>
         </a>
       </div>
-
+      
+      <form ng-submit="addCustomer()">
+        <input placeholder="Insert a name" ng-model="customerData.name" class="customer-new-input" ng-show="showInputNewCustomer" required></input>
+      </form>
       <ul id="customer-list" ng-repeat="customer in customers">
         <li><a href="/customer/{{customer}}">{{customer.name}}</a></li>
       </ul>

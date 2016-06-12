@@ -22,7 +22,8 @@ angular.module('webAppApp')
 
     var headers = {
       'Authorization': currentToken,
-      'Accept': 'application/json;odata=verbose'
+      'Accept': 'application/json;odata=verbose',
+      'Content-Type': 'application/json'
     };
 
     $scope.loadCustomers = function() {
@@ -52,19 +53,22 @@ angular.module('webAppApp')
       });
     }
 
-    // Initialize
-    $scope.loadCustomers();
-    $scope.loadTasks();
-
-    $scope.taskStart = '00:00';
-    $scope.taskEnd = '00:00';
-
     $scope.addCustomer = function() {
-      $scope.customers.push('To Do');
+      $http({
+          method: 'POST',
+          url: '/api/customers/add',
+          data: $scope.customerData,
+          headers : headers
+        })
+      .then(function successCallback(response) {
+        if (response.data.success == true)
+          $scope.loadCustomers();
+          $scope.showInputNewCustomer = false;
+          $scope.customerData = "";
+      });
     };
 
     $scope.addTask = function() {
-      // check to make sure the form is completely valid
       $scope.taskSubmitted = true;
       if (!$scope.taskForm.$valid) {
         return;
@@ -86,8 +90,15 @@ angular.module('webAppApp')
           $scope.newTask.end = '00:00';
           $scope.taskCustomer = $scope.customers[0];
           $scope.loadTasks();
-          $scoe.taskSubmitted = false;
+          $scope.taskSubmitted = false;
         }
       });
     };
+
+    // Initialize
+    $scope.loadCustomers();
+    $scope.loadTasks();
+
+    $scope.taskStart = '00:00';
+    $scope.taskEnd = '00:00';
   });

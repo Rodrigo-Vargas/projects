@@ -123,6 +123,17 @@ span.home-text {
   color: #eff2f4;
 }
 
+.customer-new-input {
+  background: none;
+  border: none;
+  color: #a4b2c0;
+  font-size: 14px;
+  height: 14px;
+  margin-left: 15px;
+  padding: 15px 10px;
+  width: 200px;
+}
+
 #customer-list {
   list-style: none;
   padding: 0 0 0 15px;
