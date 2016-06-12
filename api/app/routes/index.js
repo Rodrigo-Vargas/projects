@@ -1,10 +1,10 @@
 'use strict';
 
-var User            = require('../models/user');
+var User           = require('../models/user');
+var UsersController    = require('../controllers/usersController');
 var Customer       = require('../models/customer');
-var Task       = require('../models/task');
-var Config          = require('../../config/database');
-var Helpers         = require('../helpers');
+var Task           = require('../models/task');
+var Helpers        = require('../helpers');
 
 module.exports = function (app, jwt, passport) {
   var helpers = new Helpers();
@@ -12,51 +12,9 @@ module.exports = function (app, jwt, passport) {
   var taskInstance = new Task();
   var customerInstance = new Customer();
 
-  app.post('/api/signup', function(req, res) {    
-    if (!req.body.email || !req.body.password)
-    {
-      res.json({success: false, msg: 'Please pass email and password.'});
-    }
-    else 
-    {
-      var newUser = new User();
+  app.post('/api/signup', UsersController.signup);
 
-      newUser.email = req.body.email;
-      newUser.password = newUser.generateHash(req.body.password);
-
-      newUser.save(function(err, result){
-        if (err) {
-          return res.json({success: false, msg: 'Username already exists.'});
-        }
-        res.json({success: true, msg: 'Successful created new user.'});
-      });      
-    }
-  });
-
-  app.post('/api/login', function(req, res) {
-    var user = new User();
-
-    user.findOne({ 'email' : req.body.email}, function(err, user){
-      if (err) 
-        throw err;
-
-      if (!user)
-      {
-        res.json({success: false, message: 'Check your email address and/or password'});
-        return;
-      }
-
-      if (!user.validPassword(req.body.password))
-      {
-        res.json({success: false, message: 'Check your email address and/or password'});
-        return;
-      }
-
-      var token = jwt.sign(user, Config.secret);
-
-      res.json({success: true, token: "JWT " + token});
-    });   
-  });
+  app.post('/api/login', UsersController.login);
 
   app.post('/api/customers/add', passport.authenticate('jwt', { session: false}), function(req, res){
     if (!req.body.name)
@@ -104,7 +62,7 @@ module.exports = function (app, jwt, passport) {
   });
 
   app.post('/api/tasks/add', passport.authenticate('jwt', { session: false}), function(req, res){
-    var customer = JSON.parse(req.body.customer);
+    var customer = req.body.customer;
 
     if (!customer)
     {
