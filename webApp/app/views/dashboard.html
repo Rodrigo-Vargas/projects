@@ -3,7 +3,7 @@
     <div id="sidebar">
       <div class="clearfix">
         <h3 id="sidebar-title" class="pull-left">Customers</h3>
-        <a id="add-customer-btn" class="btn pull-right" ng-click="showInputNewCustomer = true">
+        <a id="add-customer-btn" class="customer-btn btn pull-right" ng-click="showInputNewCustomer = true">
           <i class="fa fa-plus"></i>
         </a>
       </div>
@@ -12,7 +12,16 @@
         <input placeholder="Insert a name" ng-model="customerData.name" class="customer-new-input" ng-show="showInputNewCustomer" required></input>
       </form>
       <ul id="customer-list" ng-repeat="customer in customers">
-        <li><a href="/customer/{{customer}}">{{customer.name}}</a></li>
+        <li>
+          <div class="row">
+            <div class="col-md-10">
+              <a href="/customer/{{customer}}">{{customer.name}}</a>
+            </div>
+            <div class="col-md-2">
+              <a class="btn customer-btn" ng-click="deleteCustomer(customer.id)"><i class="fa fa-trash"></i></a>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </div>

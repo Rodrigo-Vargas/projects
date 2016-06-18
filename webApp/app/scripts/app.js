@@ -126,6 +126,22 @@ angular
       return [200, dataReturned, {}];
     });
 
+    $httpBackend.whenPOST('/api/customers/destroy').respond(function(method, url, data, headers){
+      var jsonData = JSON.parse(data);
+
+      var idToDestroy = jsonData.id;
+
+      customers = customers.filter(function(customer){
+        return customer.id != idToDestroy;
+      });
+
+      var dataReturned = { 'success' : true,
+                           'customers' : customers
+                         };
+
+      return [200, dataReturned, {}];
+    });
+
     $httpBackend.whenGET('/api/tasks/getByUser').respond(function(method, url, data, headers){
       var dataReturned = { 'success' : true,
                            'agenda' : agenda
@@ -145,5 +161,4 @@ angular
                 customer : jsonData.customer});
       return [200, { success : true, tasks : tasks }, {}];
     });
-  });
-*/
+  });*/

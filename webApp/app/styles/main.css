@@ -113,16 +113,6 @@ span.home-text {
   margin: 0px;
 }
 
-#add-customer-btn {
-  color: #B9B9B9;
-  line-height: 28px;
-  vertical-align: middle;
-}
-
-#add-customer-btn:hover {
-  color: #eff2f4;
-}
-
 .customer-new-input {
   background: none;
   border: none;
@@ -146,8 +136,18 @@ span.home-text {
   text-decoration: none;
 }
 
-#customer-list a:hover {
+#customer-list li:hover {
   background-color: #44515F;
+}
+
+.customer-btn {
+  color: #B9B9B9 !important;
+  line-height: 28px;
+  vertical-align: middle;
+}
+
+.customer-btn:hover {
+  color: #eff2f4 !important;
 }
 
 #dashboard {

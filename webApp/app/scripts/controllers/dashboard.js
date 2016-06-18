@@ -68,6 +68,19 @@ angular.module('webAppApp')
       });
     };
 
+    $scope.deleteCustomer = function(customerId) {
+      $http({
+          method: 'POST',
+          url: '/api/customers/destroy',
+          data: { id : customerId },
+          headers : headers
+        })
+      .then(function successCallback(response) {
+        if (response.data.success == true)
+          $scope.loadCustomers();
+      });
+    };
+
     $scope.addTask = function() {
       $scope.taskSubmitted = true;
       if (!$scope.taskForm.$valid) {

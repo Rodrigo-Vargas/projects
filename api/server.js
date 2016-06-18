@@ -6,18 +6,18 @@ var jwt        = require('jsonwebtoken');
 var passport   = require('passport');
 var record     = require('pg-record');
 
-var app 	= express();
-
-var routes  = require('./app/routes/index.js');
-
-var port = process.env.PORT || 3000;
-
 record.connect({
                 user: 'projects',
                 password: 'projects',
                 database: 'projects',
                 host: 'localhost'
               });
+
+var app 	= express();
+
+var routes  = require('./app/routes/index.js');
+
+var port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/dist'));
