@@ -69,6 +69,9 @@ angular.module('webAppApp')
     };
 
     $scope.deleteCustomer = function(customerId) {
+      if (!window.confirm('Are you sure?'))
+          return;
+
       $http({
           method: 'POST',
           url: '/api/customers/destroy',
@@ -78,6 +81,22 @@ angular.module('webAppApp')
       .then(function successCallback(response) {
         if (response.data.success == true)
           $scope.loadCustomers();
+      });
+    };
+
+    $scope.deleteTask = function(taskId) {
+      if (!window.confirm('Are you sure?'))
+          return;
+
+      $http({
+          method: 'POST',
+          url: '/api/tasks/destroy',
+          data: { id : taskId },
+          headers : headers
+        })
+      .then(function successCallback(response) {
+        if (response.data.success == true)
+          $scope.loadTasks();
       });
     };
 

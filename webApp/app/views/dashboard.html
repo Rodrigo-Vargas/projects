@@ -63,7 +63,9 @@
           <div id="task-list-body" >
             <div class="gutter-0 row task-row" ng-repeat="task in workDay.tasks">
               <div class="col-xs-1">
-                <input type="checkbox" class="checkbox"></input>
+                <a class="btn" ng-click="deleteTask(task.id)">
+                  <i class="fa fa-trash"></i>
+                </a>
               </div>
               <div class="col-xs-2">
                 <span>{{ task.description }}</span>      

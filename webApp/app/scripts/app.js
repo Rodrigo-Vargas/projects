@@ -16,8 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.utils.masks'//,
-    //'ngMockE2E'
+    'ui.utils.masks'
+    //,'ngMockE2E'
   ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -54,6 +54,7 @@ angular
   //.run(function($httpBackend) {
   //  $httpBackend.whenGET(/views\/.*/).passThrough();
   /*  var tasks = [{
+                id : 1,
                 description : 'Task 1',
                 duration : '02:00',
                 start : '10:00',
@@ -61,6 +62,7 @@ angular
                 customer : { id : 1, name: 'Facebook' }
               },
                {
+                id : 2,
                 description : 'Task 2',
                 duration : '02:00',
                 start : '08:00',
@@ -142,6 +144,25 @@ angular
       return [200, dataReturned, {}];
     });
 
+    $httpBackend.whenPOST('/api/tasks/destroy').respond(function(method, url, data, headers){
+      var jsonData = JSON.parse(data);
+
+      var idToDestroy = jsonData.id;
+
+      tasks = tasks.filter(function(task){
+        return task.id != idToDestroy;
+      });
+
+      agenda[0].tasks = tasks;
+
+      var dataReturned = { 'success' : true,
+                           'tasks' : tasks
+                         };
+
+      return [200, dataReturned, {}];
+    });
+
+
     $httpBackend.whenGET('/api/tasks/getByUser').respond(function(method, url, data, headers){
       var dataReturned = { 'success' : true,
                            'agenda' : agenda
@@ -161,4 +182,5 @@ angular
                 customer : jsonData.customer});
       return [200, { success : true, tasks : tasks }, {}];
     });
-  });*/
+  });
+*/
