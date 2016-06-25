@@ -12,11 +12,11 @@ UsersController.signup = function(req, res) {
   if (!req.body.email || !req.body.password)
     return res.json({success: false, message: 'Please pass email and password.'});
   
-  var newUser = new User();
-
-  newUser.findOne( { email : req.body.email}, function(err, user){
+  User.findOne( { email : req.body.email}, function(err, user){
     if (user)
       return res.json({success: false, message: 'Username already exists.'}); 
+
+    var newUser = new User();
 
     newUser.email = req.body.email;
     newUser.password = newUser.generateHash(req.body.password);
@@ -34,13 +34,10 @@ UsersController.signup = function(req, res) {
                   token: "JWT " + token});
     });
   });
-
 }
 
 UsersController.login = function(req, res) {
-  var user = new User();
-
-  user.findOne({ 'email' : req.body.email}, function(err, user){
+  User.findOne({ 'email' : req.body.email}, function(err, user){
     if (err) 
       throw err;
 
@@ -56,7 +53,7 @@ UsersController.login = function(req, res) {
       return;
     }
 
-    var token = jwt.sign(user, Config.secret);
+    var token = jwt.sign({ id:  user.id, email : user.email }, Config.secret);
 
     res.json({success: true, token: "JWT " + token});
   });   

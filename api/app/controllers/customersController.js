@@ -3,9 +3,6 @@
 var Customer       = require('../models/customer');
 var User           = require('../models/user');
 
-var userInstance = new User();
-var customerInstance = new Customer();
-
 function CustomersController () { }
 
 CustomersController.add = function(req, res){
@@ -16,7 +13,7 @@ CustomersController.add = function(req, res){
   else 
   {
     var newCustomer = new Customer();
-
+    
     newCustomer.name = req.body.name;
     newCustomer.user_id = 1;
 
@@ -30,7 +27,7 @@ CustomersController.add = function(req, res){
 }
 
 CustomersController.getByUser = function(req, res) {
-  userInstance.findOne({
+  User.findOne({
     'email': req.user.email
   }, function(err, user) {
     if (err) 
@@ -41,7 +38,7 @@ CustomersController.getByUser = function(req, res) {
     } 
     else
     {
-      customerInstance.find(false, function(err, results){
+      Customer.find(false, function(err, results){
         var customers = [];
         for(var index = 0; index < parseInt(results.rowCount); index++){
           customers.push(results.rows[index]);
